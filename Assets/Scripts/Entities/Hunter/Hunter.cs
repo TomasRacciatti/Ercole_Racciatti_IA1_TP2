@@ -7,10 +7,11 @@ public class Hunter : Agent
 
     public float destroyDistance = 2f;
     public Transform[] patrolPoints;
-    public float _visionRadius; // Esto puede cambiar cuando repasemos FOV y LOS
+    public float _detectionRadius; // Esto puede cambiar cuando repasemos FOV y LOS
     public FSM stateMachine;
 
-    public PlayerControler target; // Asegurarse de que sea autonomo
+    public Player target; // Asegurarse de que sea autonomo
+    public LayerMask playerLayerMask;
 
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class Hunter : Agent
     private void Update()
     {
         stateMachine.OnUpdate();
+        DetectPlayerInRange();
 
         if (_directionalVelocity != Vector3.zero)  // Hunter rotation to objective
         {
@@ -42,10 +44,20 @@ public class Hunter : Agent
     }
 
 
+    private void DetectPlayerInRange()
+    {
+        Collider[] hits = Physics.OverlapSphere(transform.position, _detectionRadius, playerLayerMask);
+
+        if (hits.Length > 0)
+        {
+            target = hits[0].GetComponent<Player>();
+        }
+    }
+
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.blue;
-        Gizmos.DrawWireSphere(transform.position, _visionRadius);
+        Gizmos.DrawWireSphere(transform.position, _detectionRadius);
     }
 
 }

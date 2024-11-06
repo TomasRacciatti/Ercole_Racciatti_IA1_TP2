@@ -21,7 +21,7 @@ public class HunterPatrol : IState
         {
             Vector3 targetPosition = _hunter.target.Position;
 
-            if (Vector3.Distance(targetPosition, _hunter.transform.position) <= _hunter._visionRadius) // Posiblemente tenga que cambiar para integrar FOV y LOS
+            if (Vector3.Distance(targetPosition, _hunter.transform.position) <= _hunter._detectionRadius) // Posiblemente tenga que cambiar para integrar FOV y LOS
             {
                 _manager.SetState<HunterChase>();
                 return;
