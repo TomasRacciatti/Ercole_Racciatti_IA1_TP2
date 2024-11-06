@@ -510,6 +510,7 @@ GameObject:
   - component: {fileID: 201001167}
   - component: {fileID: 201001166}
   - component: {fileID: 201001165}
+  - component: {fileID: 201001169}
   m_Layer: 31
   m_Name: Player
   m_TagString: Untagged
@@ -606,6 +607,28 @@ Transform:
   - {fileID: 963194228}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &201001169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 201001164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efb97962f77156a45886288fe0de39c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _directionalVelocity: {x: 0, y: 0, z: 0}
+  _speedPropery: 0
+  speed: 0
+  rotationSpeed: 0
+  _steeringForce: 0
+  maxFutureTime: 2
+  obstacleMask:
+    serializedVersion: 2
+    m_Bits: 0
+  _speed: 7
 --- !u!1 &254293340
 GameObject:
   m_ObjectHideFlags: 0
@@ -620,7 +643,7 @@ GameObject:
   - component: {fileID: 254293344}
   - component: {fileID: 254293343}
   - component: {fileID: 254293342}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Obstacle1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1020,7 +1043,7 @@ GameObject:
   - component: {fileID: 289560119}
   - component: {fileID: 289560118}
   - component: {fileID: 289560117}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: Hunter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1048,15 +1071,18 @@ MonoBehaviour:
   obstacleMask:
     serializedVersion: 2
     m_Bits: 536870912
-  destroyDistance: 2
+  destroyDistance: 1
   patrolPoints:
   - {fileID: 1654394579}
   - {fileID: 2046567973}
   - {fileID: 1204239175}
   - {fileID: 1273432413}
   - {fileID: 1616864390}
-  _visionRadius: 10
+  _detectionRadius: 15
   target: {fileID: 0}
+  playerLayerMask:
+    serializedVersion: 2
+    m_Bits: 2147483648
 --- !u!136 &289560118
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -7070,7 +7096,7 @@ GameObject:
   - component: {fileID: 1085893842}
   - component: {fileID: 1085893841}
   - component: {fileID: 1085893840}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Obstacle3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7422,7 +7448,7 @@ GameObject:
   - component: {fileID: 1125242615}
   - component: {fileID: 1125242614}
   - component: {fileID: 1125242613}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Obstacle2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9107,7 +9133,7 @@ GameObject:
   - component: {fileID: 1864454741}
   - component: {fileID: 1864454740}
   - component: {fileID: 1864454739}
-  m_Layer: 0
+  m_Layer: 30
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9320,7 +9346,7 @@ GameObject:
   - component: {fileID: 1986852168}
   - component: {fileID: 1986852167}
   - component: {fileID: 1986852166}
-  m_Layer: 0
+  m_Layer: 29
   m_Name: Obstacle4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
