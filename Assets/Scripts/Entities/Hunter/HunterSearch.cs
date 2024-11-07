@@ -46,6 +46,8 @@ public class HunterSearch : IState
 
         MoveAlongPath();
 
+        //PathFinding.MoveAlongPath(_hunter, _hunter.pathList, currentPathIndex);
+
         /* agregar logica que mira a los costados cuando llega hasta que se acabe el timer
         
         if (currentPathIndex >= _hunter.pathList.Count)
@@ -57,6 +59,7 @@ public class HunterSearch : IState
 
     public void OnSleep()
     {
+        currentPathIndex = 0;
         return;
     }
 
@@ -71,7 +74,9 @@ public class HunterSearch : IState
     }
 
 
-    private void MoveAlongPath()
+  
+
+    public void MoveAlongPath()
     {
         if (_hunter.pathList != null && currentPathIndex < _hunter.pathList.Count)
         {
@@ -94,4 +99,5 @@ public class HunterSearch : IState
             Debug.Log("Hunter: Path completed or no path available.");
         }
     }
+   
 }

@@ -21,6 +21,9 @@ public class Agent : Entity
     [SerializeField] protected float _visionRadius;
     [SerializeField] protected float _visionAngle;
 
+    public List<Node> pathList = new List<Node>();
+    public Node startingNode;
+
     public void SetVelocity(Vector3 force)
     {
         _directionalVelocity = Vector3.ClampMagnitude(_directionalVelocity + force, speed);

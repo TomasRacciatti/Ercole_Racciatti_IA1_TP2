@@ -12,9 +12,6 @@ public class Hunter : Agent
     public Player target;
     public LayerMask playerLayerMask;
 
-    public List<Node> pathList = new List<Node>();
-    public Node startingNode;
-
     private void Awake()
     {
         stateMachine = new();
