@@ -9,6 +9,7 @@ public class HunterSearch : IState
 
     public void OnAwake()
     {
+        Debug.Log(_hunter.name + ": Searching");
         return;
     }
 
@@ -24,15 +25,9 @@ public class HunterSearch : IState
                 _manager.SetState<HunterChase>();
                 return;
             }
-
-            if (!GameManager.Instance.playerFound)
-            {
-                _manager.SetState<HunterPatrol>();
-                return;
-            }
         }   
         
-        if (_hunter.target == null)
+        if (!GameManager.Instance.playerFound)
         {
             _manager.SetState<HunterPatrol>();
             return;

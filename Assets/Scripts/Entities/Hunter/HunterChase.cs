@@ -9,7 +9,7 @@ public class HunterChase : IState
 
     public void OnAwake()
     {
-        Debug.Log("Chasing");
+        Debug.Log(_hunter.name + ": Chasing");
         return;
     }
 
@@ -17,9 +17,9 @@ public class HunterChase : IState
     {
         Player target = null;
 
-        float distance = Vector3.Distance(_hunter.target.Position, _hunter.transform.position);
+        float distanceToTarget = Vector3.Distance(_hunter.target.Position, _hunter.transform.position);
 
-        if (distance < _hunter.VisionRadius * 1.2f)
+        if (distanceToTarget < _hunter.VisionRadius * 1.2f)
         {
             target = _hunter.target;
         }
@@ -32,7 +32,7 @@ public class HunterChase : IState
 
             if (Vector3.Distance(targetPosition, _hunter.transform.position) < _hunter.destroyDistance)
             {
-                // GAME OVER
+                // GAME OVER LOGIC
                 return;
             }
 
@@ -43,14 +43,14 @@ public class HunterChase : IState
                 _hunter.transform.position += _hunter._directionalVelocity * Time.deltaTime;
             }
 
-            /*
-            else if ("Hunter.State == "TargetFound"" && !AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask))
+            
+            if (GameManager.Instance.playerFound && !AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask))
             {
                 _manager.SetState<HunterSearch>();
                 return;
             }
-            */
-            if (!GameManager.Instance.playerFound && !AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask)) // El segundo chequeo tal vez no es necesario porque el GameManager.Instance.playerFound ya utiliza el IsInFOV
+            
+            if (!GameManager.Instance.playerFound)
             {
                 _manager.SetState<HunterPatrol>();
                 return;
@@ -59,6 +59,12 @@ public class HunterChase : IState
 
         if (target == null)
         {
+            if (GameManager.Instance.playerFound)
+            {
+                _manager.SetState<HunterSearch>();
+                return;
+            }
+
             _manager.SetState<HunterPatrol>();
                 return;
         }

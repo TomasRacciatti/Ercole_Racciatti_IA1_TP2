@@ -45,7 +45,7 @@ public class Hunter : Agent
 
     private void DetectPlayerInRange()
     {
-        Collider[] hits = Physics.OverlapSphere(transform.position, _visionRadius, playerLayerMask);
+        Collider[] hits = Physics.OverlapSphere(transform.position, _visionRadius * 1.2f, playerLayerMask);
 
         if (hits.Length > 0)
         {

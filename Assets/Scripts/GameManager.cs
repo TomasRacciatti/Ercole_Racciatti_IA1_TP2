@@ -42,10 +42,13 @@ public class GameManager : MonoBehaviour
 
         foreach (var hunter in _hunters)
         {
-            if (AIUtility.IsInFOV(hunter, hunter.target.Position, hunter.obstacleMask))
+            if (hunter.target != null)
             {
-                anyHunterSeesPlayer = true;
-                break;
+                if (AIUtility.IsInFOV(hunter, hunter.target.Position, hunter.obstacleMask))
+                {
+                    anyHunterSeesPlayer = true;
+                    break;
+                }
             }
         }
 

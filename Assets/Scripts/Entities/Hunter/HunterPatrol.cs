@@ -11,7 +11,7 @@ public class HunterPatrol : IState
 
     public void OnAwake()
     {
-        Debug.Log("Patrolling");
+        Debug.Log(_hunter.name + ": Patrolling");
         return;
     }
 
