@@ -12,6 +12,9 @@ public class Hunter : Agent
     public Player target;
     public LayerMask playerLayerMask;
 
+    public List<Node> pathList = new List<Node>();
+    public Node startingNode;
+
     private void Awake()
     {
         stateMachine = new();
@@ -40,6 +43,11 @@ public class Hunter : Agent
         {
             return;
         }
+
+        Node startingNode = NodeManager.Instance.GetClosestNode(Position);
+        
+
+        // pathList = PathFinding.CalculatePathBFS(startingNode, targetNode);   Esta linea de codigo es la que deberia ir en el HunterSearch
     }
 
 

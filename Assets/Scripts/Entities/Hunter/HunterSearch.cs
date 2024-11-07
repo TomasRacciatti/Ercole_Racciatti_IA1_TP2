@@ -35,6 +35,8 @@ public class HunterSearch : IState
         
 
         // Logica: ir al ultimo nodo donde se vio al jugador
+
+        _hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, NodeManager.Instance.targetNode);
     }
 
     public void OnSleep()

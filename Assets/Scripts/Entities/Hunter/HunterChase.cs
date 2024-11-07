@@ -29,6 +29,8 @@ public class HunterChase : IState
             Vector3 targetPosition = target.Position;
             Vector3 targetVelocity = target.Velocity;
 
+            NodeManager.Instance.targetNode = NodeManager.Instance.GetClosestNode(targetPosition);  // El hunter que ve al jugador settea el nodo mas cercano
+
 
             if (Vector3.Distance(targetPosition, _hunter.transform.position) < _hunter.destroyDistance)
             {
