@@ -44,10 +44,8 @@ public class Hunter : Agent
             return;
         }
 
-        Node startingNode = NodeManager.Instance.GetClosestNode(Position);
-        
 
-        // pathList = PathFinding.CalculatePathBFS(startingNode, targetNode);   Esta linea de codigo es la que deberia ir en el HunterSearch
+        startingNode = NodeManager.Instance.GetClosestNode(Position);
     }
 
 
