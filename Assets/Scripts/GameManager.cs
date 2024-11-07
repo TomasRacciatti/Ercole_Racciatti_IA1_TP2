@@ -27,7 +27,6 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         _hunters.AddRange(FindObjectsOfType<Hunter>());
-        sightTimerCounter = lostSightTimer;
     }
 
     private void Update()

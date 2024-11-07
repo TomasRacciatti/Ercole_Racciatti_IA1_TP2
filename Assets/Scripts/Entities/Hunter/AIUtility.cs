@@ -24,7 +24,7 @@ public static class AIUtility
 
     private static bool IsInLineOfSight(Vector3 agentPosition, Vector3 targetDirection, LayerMask obstacleLayer)
     {
-        float castRadius = 0.5f;
+        float castRadius = 0.2f;
 
         return !Physics.SphereCast(agentPosition, castRadius, targetDirection, out _, targetDirection.magnitude, obstacleLayer);
     }

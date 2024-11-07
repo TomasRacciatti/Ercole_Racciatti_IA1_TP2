@@ -1045,6 +1045,7 @@ GameObject:
   - component: {fileID: 289560119}
   - component: {fileID: 289560118}
   - component: {fileID: 289560117}
+  - component: {fileID: 289560122}
   m_Layer: 30
   m_Name: Hunter
   m_TagString: Untagged
@@ -1175,6 +1176,25 @@ Transform:
   - {fileID: 1864454738}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+--- !u!114 &289560122
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 289560116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 193ab459b36e2bd40843c039b7789f0e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _castRadius: 0.2
+  _aheadDistance: 1
+  _obstacleMask:
+    serializedVersion: 2
+    m_Bits: 536870912
+  _angle: 45
+  _agent: {fileID: 0}
 --- !u!43 &322605570
 Mesh:
   m_ObjectHideFlags: 0
