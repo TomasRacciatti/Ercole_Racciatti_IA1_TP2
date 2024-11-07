@@ -21,21 +21,24 @@ public class HunterPatrol : IState
         {
             Vector3 targetPosition = _hunter.target.Position;
 
-            if (Vector3.Distance(targetPosition, _hunter.transform.position) <= _hunter._detectionRadius) // Posiblemente tenga que cambiar para integrar FOV y LOS
+            if (AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask))
             {
+
                 _manager.SetState<HunterChase>();
                 return;
             }
-
-
-            // LOGICA PARA QUE LOS OTROS ENEMIGOS PASEN A HunterSearch DEL ULTIMO NODO EN EL QUE SE VIO AL JUGADOR
-            /*
-             if ("Hunter.State == "TargetFound"" && Vector3.Distance(targetPosition, _hunter.transform.position) >= _hunter._visionRadius) // La primera parte esta entre comillas porque todavia estoy pensando como implementarlo
+            
+            if (GameManager.Instance.playerFound && !AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask))
             {
                 _manager.SetState<HunterSearch>();
                 return;
             }
-             */
+        }
+
+        if (GameManager.Instance.playerFound && _hunter.target == null) // Tengo que hacer este chequeo para el caso que lo vea un hunter cuando los otros nunca lo referenciaron. Cuando los otros hunters se acerquen mediante el search, deberian referenciar al jugador
+        {
+            _manager.SetState<HunterSearch>();
+            return;
         }
 
         Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, _hunter.patrolPoints[_targetPoint].position, _hunter._steeringForce);
@@ -51,7 +54,6 @@ public class HunterPatrol : IState
 
     public void OnSleep()
     {
-        Debug.Log("NotPatrolling");
         return;
     }
 

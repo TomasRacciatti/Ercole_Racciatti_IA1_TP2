@@ -9,6 +9,7 @@ public class HunterChase : IState
 
     public void OnAwake()
     {
+        Debug.Log("Chasing");
         return;
     }
 
@@ -18,7 +19,7 @@ public class HunterChase : IState
 
         float distance = Vector3.Distance(_hunter.target.Position, _hunter.transform.position);
 
-        if (distance < _hunter._detectionRadius * 1.2f)
+        if (distance < _hunter.VisionRadius * 1.2f)
         {
             target = _hunter.target;
         }
@@ -41,19 +42,27 @@ public class HunterChase : IState
 
                 _hunter.transform.position += _hunter._directionalVelocity * Time.deltaTime;
             }
+
+            /*
+            else if ("Hunter.State == "TargetFound"" && !AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask))
+            {
+                _manager.SetState<HunterSearch>();
+                return;
+            }
+            */
+            if (!GameManager.Instance.playerFound && !AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask)) // El segundo chequeo tal vez no es necesario porque el GameManager.Instance.playerFound ya utiliza el IsInFOV
+            {
+                _manager.SetState<HunterPatrol>();
+                return;
+            }
         }
-        /*
-        else if ("Hunter.State == "TargetFound"" && "no line of sight")
-        {
-            _manager.SetState<HunterSearch>();
-            return;
-        }
-        */
-        else
+
+        if (target == null)
         {
             _manager.SetState<HunterPatrol>();
-            return;
+                return;
         }
+
     }
 
     public void OnSleep()
