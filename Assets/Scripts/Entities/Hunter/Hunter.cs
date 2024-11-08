@@ -30,15 +30,15 @@ public class Hunter : Agent
     {
         stateMachine.OnUpdate();
         DetectPlayerInRange();
-
-        if (_directionalVelocity != Vector3.zero)  // Hunter rotation to objective
+        
+        if (_directionalVelocity != Vector3.zero && !lookingAround)  // Hunter rotation to objective
         {
             Quaternion targetRotation = Quaternion.LookRotation(_directionalVelocity);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime);
         }
-        else
+        else if (lookingAround)
         {
-            return;
+            LookAround();
         }
 
 
@@ -61,5 +61,6 @@ public class Hunter : Agent
         Gizmos.color = Color.blue;
         Gizmos.DrawWireSphere(transform.position, _visionRadius);
     }
+
 
 }

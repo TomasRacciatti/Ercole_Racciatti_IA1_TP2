@@ -15,6 +15,10 @@ public class Agent : Entity
     [SerializeField] protected float _speedPropery; // Preguntar: Conviene usar una variable publica o hacer esta propiedad?
     public float speed;
     [SerializeField] protected float rotationSpeed;
+    protected int rotationState;
+    [SerializeField] protected float lookAroundSpeed;
+    public bool lookingAround = false;
+
     [Range(0f, 1f)] public float _steeringForce;
     public float maxFutureTime = 2f;
     public LayerMask obstacleMask;
@@ -28,5 +32,31 @@ public class Agent : Entity
     public void SetVelocity(Vector3 force)
     {
         _directionalVelocity = Vector3.ClampMagnitude(_directionalVelocity + force, speed);
+    }
+
+
+
+    public void LookAround()
+    {
+        float rotationAngle = 0f;
+
+        if (rotationState == 1)
+        {
+            rotationAngle = 90f;
+        }
+        else if (rotationAngle == 2)
+        {
+            rotationAngle = -90f;
+        }
+
+        Quaternion searchRotation = Quaternion.Euler(0, rotationAngle, 0);
+        Debug.Log($"Looking Around: Current State {rotationState}, Target Angle {rotationAngle}");
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, searchRotation, lookAroundSpeed * Time.deltaTime);
+
+        if (Quaternion.Angle(transform.rotation, searchRotation) < 1f)
+        {
+            rotationState = (rotationState + 1) % 3;
+            Debug.Log($"Looking Around: Transitioned to rotation state {rotationState}");
+        }
     }
 }

@@ -58,18 +58,18 @@ public class HunterSearch : IState
 
         PathFinding.MoveAlongPath(_hunter, _hunter.pathList);
 
-        /* agregar logica que mira a los costados cuando llega hasta que se acabe el timer
         
-        if (currentPathIndex >= _hunter.pathList.Count)
+        if (_hunter.currentPathIndex >= _hunter.pathList.Count)
         {
-            return;
+            _hunter.lookingAround = true;
         }
-        */
+        
     }
 
     public void OnSleep()
     {
         _hunter.currentPathIndex = 0;
+        _hunter.lookingAround = false;
         return;
     }
 

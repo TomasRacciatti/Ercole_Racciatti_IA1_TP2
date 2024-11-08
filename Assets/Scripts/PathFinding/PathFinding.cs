@@ -7,7 +7,7 @@ public static class PathFinding
 
     public static List<Node> CalculatePathBFS(Node startingNode, Node finishNode)
     {
-        Debug.Log($"Calculating path from {startingNode.name} to {finishNode.name}");
+        //Debug.Log($"Calculating path from {startingNode.name} to {finishNode.name}");
 
         Queue<Node> frontier = new Queue<Node>();
         frontier.Enqueue(startingNode);
@@ -79,7 +79,7 @@ public static class PathFinding
         }
         else
         {
-            Debug.Log("Hunter: Path completed or no path available.");
+            //Debug.Log("Hunter: Path completed or no path available.");
         }
     }
 }

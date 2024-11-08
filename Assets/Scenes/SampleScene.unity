@@ -776,6 +776,8 @@ MonoBehaviour:
   _speedPropery: 0
   speed: 0
   rotationSpeed: 0
+  lookAroundSpeed: 0
+  lookingAround: 0
   _steeringForce: 0
   maxFutureTime: 2
   obstacleMask:
@@ -783,6 +785,9 @@ MonoBehaviour:
     m_Bits: 0
   _visionRadius: 0
   _visionAngle: 0
+  pathList: []
+  startingNode: {fileID: 0}
+  currentPathIndex: 0
   _speed: 7
 --- !u!1 &217974363
 GameObject:
@@ -840,6 +845,8 @@ MonoBehaviour:
   _speedPropery: 0
   speed: 5
   rotationSpeed: 5
+  lookAroundSpeed: 0
+  lookingAround: 0
   _steeringForce: 0.1
   maxFutureTime: 2
   obstacleMask:
@@ -847,6 +854,9 @@ MonoBehaviour:
     m_Bits: 536870912
   _visionRadius: 15
   _visionAngle: 45
+  pathList: []
+  startingNode: {fileID: 0}
+  currentPathIndex: 0
   destroyDistance: 1
   patrolPoints:
   - {fileID: 2116378039}
@@ -858,8 +868,6 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 2147483648
-  pathList: []
-  startingNode: {fileID: 0}
 --- !u!136 &217974366
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -1510,6 +1518,8 @@ MonoBehaviour:
   _speedPropery: 0
   speed: 5
   rotationSpeed: 5
+  lookAroundSpeed: 1
+  lookingAround: 0
   _steeringForce: 0.1
   maxFutureTime: 2
   obstacleMask:
@@ -1517,6 +1527,9 @@ MonoBehaviour:
     m_Bits: 536870912
   _visionRadius: 15
   _visionAngle: 45
+  pathList: []
+  startingNode: {fileID: 0}
+  currentPathIndex: 0
   destroyDistance: 1
   patrolPoints:
   - {fileID: 1654394579}
@@ -1528,8 +1541,6 @@ MonoBehaviour:
   playerLayerMask:
     serializedVersion: 2
     m_Bits: 2147483648
-  pathList: []
-  startingNode: {fileID: 0}
 --- !u!136 &289560118
 CapsuleCollider:
   m_ObjectHideFlags: 0
