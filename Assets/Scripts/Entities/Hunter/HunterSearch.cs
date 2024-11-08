@@ -7,11 +7,12 @@ public class HunterSearch : IState
     private Hunter _hunter;
     private FSM _manager;
 
-    private int currentPathIndex = 0;
+    private Node lastTargetNode;
 
     public void OnAwake()
     {
-        Debug.Log(_hunter.name + ": Searching");
+        //Debug.Log(_hunter.name + ": Searching");
+        _hunter.pathList = null;
         return;
     }
 
@@ -38,15 +39,24 @@ public class HunterSearch : IState
 
         // Logica: ir al ultimo nodo donde se vio al jugador
 
+        
         if (_hunter.pathList == null || _hunter.pathList.Count == 0)
         {
             _hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, NodeManager.Instance.targetNode);
-            currentPathIndex = 0;
+            _hunter.currentPathIndex = 0;
+            lastTargetNode = NodeManager.Instance.targetNode;
+        }
+        
+        if (NodeManager.Instance.targetNode != lastTargetNode)
+        {
+            lastTargetNode = NodeManager.Instance.targetNode;
+
+            _hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, NodeManager.Instance.targetNode);
+            _hunter.currentPathIndex = 0;
         }
 
-        MoveAlongPath();
 
-        //PathFinding.MoveAlongPath(_hunter, _hunter.pathList, currentPathIndex);
+        PathFinding.MoveAlongPath(_hunter, _hunter.pathList);
 
         /* agregar logica que mira a los costados cuando llega hasta que se acabe el timer
         
@@ -59,7 +69,7 @@ public class HunterSearch : IState
 
     public void OnSleep()
     {
-        currentPathIndex = 0;
+        _hunter.currentPathIndex = 0;
         return;
     }
 
@@ -71,33 +81,6 @@ public class HunterSearch : IState
     public void SetFSM(FSM manager)
     {
         _manager = manager;
-    }
-
-
-  
-
-    public void MoveAlongPath()
-    {
-        if (_hunter.pathList != null && currentPathIndex < _hunter.pathList.Count)
-        {
-            Node currentNode = _hunter.pathList[currentPathIndex];
-            Vector3 nodePosition = currentNode.transform.position;
-
-            Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, nodePosition, _hunter._steeringForce);
-            _hunter.SetVelocity(desiredVelocity);
-
-            _hunter.transform.position += _hunter._directionalVelocity * Time.deltaTime;
-
-            
-            if (Vector3.Distance(_hunter.transform.position, currentNode.transform.position) < 0.5f)
-            {
-                currentPathIndex++;
-            }
-        }
-        else
-        {
-            Debug.Log("Hunter: Path completed or no path available.");
-        }
     }
    
 }

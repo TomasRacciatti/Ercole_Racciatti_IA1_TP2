@@ -9,7 +9,7 @@ public class HunterChase : IState
 
     public void OnAwake()
     {
-        Debug.Log(_hunter.name + ": Chasing");
+        //Debug.Log(_hunter.name + ": Chasing");
         return;
     }
 

@@ -23,6 +23,7 @@ public class Agent : Entity
 
     public List<Node> pathList = new List<Node>();
     public Node startingNode;
+    public int currentPathIndex = 0;
 
     public void SetVelocity(Vector3 force)
     {

@@ -11,7 +11,9 @@ public class HunterPatrol : IState
 
     public void OnAwake()
     {
-        Debug.Log(_hunter.name + ": Patrolling");
+        //_hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, _hunter.patrolPoints[_targetPoint].position);
+        //_hunter.currentPathIndex = 0;
+        
         return;
     }
 

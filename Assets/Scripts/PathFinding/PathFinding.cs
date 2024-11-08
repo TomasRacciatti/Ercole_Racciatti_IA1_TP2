@@ -7,6 +7,8 @@ public static class PathFinding
 
     public static List<Node> CalculatePathBFS(Node startingNode, Node finishNode)
     {
+        Debug.Log($"Calculating path from {startingNode.name} to {finishNode.name}");
+
         Queue<Node> frontier = new Queue<Node>();
         frontier.Enqueue(startingNode);
 
@@ -57,11 +59,11 @@ public static class PathFinding
     }
 
 
-    public static void MoveAlongPath(Agent agent, List<Node> pathList, int currentPathIndex)
+    public static void MoveAlongPath(Agent agent, List<Node> pathList)
     {
-        if (pathList != null && currentPathIndex < pathList.Count)
+        if (pathList != null && agent.currentPathIndex < pathList.Count)
         {   
-            Node currentNode = pathList[currentPathIndex];
+            Node currentNode = pathList[agent.currentPathIndex];
             Vector3 nodePosition = currentNode.transform.position;
 
             Vector3 desiredVelocity = SteeringBehaviours.Seek(agent.transform.position, agent.speed, agent._directionalVelocity, nodePosition, agent._steeringForce);
@@ -72,7 +74,7 @@ public static class PathFinding
 
             if (Vector3.Distance(agent.transform.position, currentNode.transform.position) < 0.5f)
             {
-                currentPathIndex++;
+                agent.currentPathIndex++;
             }
         }
         else
