@@ -16,8 +16,10 @@ public class Agent : Entity
     public float speed;
     [SerializeField] protected float rotationSpeed;
     protected int rotationState;
-    [SerializeField] protected float lookAroundSpeed;
+    [SerializeField] protected float lookAroundSpeed = 45f;
     public bool lookingAround = false;
+    private Quaternion targetRotation;
+    private bool rotationStateChanged = true;
 
     [Range(0f, 1f)] public float _steeringForce;
     public float maxFutureTime = 2f;
@@ -35,28 +37,45 @@ public class Agent : Entity
     }
 
 
-
     public void LookAround()
     {
-        float rotationAngle = 0f;
+        Vector3 rotationDirection = Vector3.zero;
 
-        if (rotationState == 1)
+        if (rotationStateChanged)
         {
-            rotationAngle = 90f;
+            if (rotationState == 0)
+            {
+                targetRotation = Quaternion.LookRotation(transform.forward);
+            }
+            else if (rotationState == 1)
+            {
+                targetRotation = Quaternion.LookRotation(Quaternion.Euler(0, 90f, 0) * transform.forward);
+            }
+            else if (rotationState == 2)
+            {
+                targetRotation = Quaternion.LookRotation(Quaternion.Euler(0, -90f, 0) * transform.forward);
+            }
+            else if (rotationState == 3)
+            {
+                targetRotation = Quaternion.LookRotation(Quaternion.Euler(0, -90f, 0) * transform.forward);
+            }
+            else if (rotationState == 4)
+            {
+                targetRotation = Quaternion.LookRotation(Quaternion.Euler(0, 90f, 0) * transform.forward);
+            }
         }
-        else if (rotationAngle == 2)
-        {
-            rotationAngle = -90f;
-        }
 
-        Quaternion searchRotation = Quaternion.Euler(0, rotationAngle, 0);
-        Debug.Log($"Looking Around: Current State {rotationState}, Target Angle {rotationAngle}");
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, searchRotation, lookAroundSpeed * Time.deltaTime);
+        rotationStateChanged = false;
+        
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, lookAroundSpeed * Time.deltaTime);
 
-        if (Quaternion.Angle(transform.rotation, searchRotation) < 1f)
+        Debug.Log($"LookAround: Current Rotation = {transform.rotation.eulerAngles.y}, Target Rotation = {targetRotation.eulerAngles.y}");
+
+        if (Quaternion.Angle(transform.rotation, targetRotation) < 2f)
         {
-            rotationState = (rotationState + 1) % 3;
-            Debug.Log($"Looking Around: Transitioned to rotation state {rotationState}");
+            rotationState = (rotationState + 1) % 5;
+            rotationStateChanged = true;
+            Debug.Log($"LookAround: Reached target rotation. Moving to rotation state {rotationState}");
         }
     }
 }
