@@ -65,6 +65,8 @@ public class HunterPatrol : IState
         {
             Vector3 patrolPointPosition = _hunter.patrolPoints[_targetPoint].transform.position;
 
+            // Tal vez podria cambiar esta logica por una que tambien use path finding => me ahorraria poner cada nodo individual
+
             Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, patrolPointPosition, _hunter._steeringForce);
             _hunter.SetVelocity(desiredVelocity);
 
