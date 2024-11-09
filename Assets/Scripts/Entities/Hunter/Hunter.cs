@@ -6,7 +6,8 @@ public class Hunter : Agent
 {
 
     public float destroyDistance = 2f;
-    public Transform[] patrolPoints;
+    //public Transform[] patrolPoints;
+    public List<Node> patrolPoints;
     public FSM stateMachine;
 
     public Player target;

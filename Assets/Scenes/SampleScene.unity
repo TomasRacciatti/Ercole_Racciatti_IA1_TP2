@@ -10381,25 +10381,29 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 44866972441034889, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
+      propertyPath: patrolPoints.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 44866972441034889, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: patrolPoints.Array.data[0]
       value: 
-      objectReference: {fileID: 1654394579}
+      objectReference: {fileID: 1654394583}
     - target: {fileID: 44866972441034889, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: patrolPoints.Array.data[1]
       value: 
-      objectReference: {fileID: 2046567973}
+      objectReference: {fileID: 2046567977}
     - target: {fileID: 44866972441034889, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: patrolPoints.Array.data[2]
       value: 
-      objectReference: {fileID: 1204239175}
+      objectReference: {fileID: 1204239179}
     - target: {fileID: 44866972441034889, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: patrolPoints.Array.data[3]
       value: 
-      objectReference: {fileID: 1273432413}
+      objectReference: {fileID: 1273432417}
     - target: {fileID: 44866972441034889, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: patrolPoints.Array.data[4]
       value: 
-      objectReference: {fileID: 1616864390}
+      objectReference: {fileID: 1616864394}
     - target: {fileID: 2046434058894876380, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: m_Name
       value: Hunter

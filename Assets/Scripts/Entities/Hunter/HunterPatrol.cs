@@ -8,17 +8,34 @@ public class HunterPatrol : IState
     private FSM _manager;
 
     private int _targetPoint = 0;
+    private bool _isFirstPatrol = true;
+    private bool _hasReturned = true;
+    private Node returnNode;
+
 
     public void OnAwake()
     {
-        //_hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, _hunter.patrolPoints[_targetPoint].position);
-        //_hunter.currentPathIndex = 0;
-        
+        if (!_isFirstPatrol)
+        {
+            _hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, returnNode);
+            _hunter.currentPathIndex = 0;
+        }
         return;
     }
 
     public void OnExecute()
     {
+        if (!_hasReturned)
+        {
+            PathFinding.MoveAlongPath(_hunter, _hunter.pathList);
+
+            if (_hunter.currentPathIndex >= _hunter.pathList.Count)
+            {
+                _hasReturned = true;
+            }
+        }
+
+
         if (_hunter.target != null)
         {
             Vector3 targetPosition = _hunter.target.Position;
@@ -43,19 +60,29 @@ public class HunterPatrol : IState
             return;
         }
 
-        Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, _hunter.patrolPoints[_targetPoint].position, _hunter._steeringForce);
-        _hunter.SetVelocity(desiredVelocity);
 
-        _hunter.transform.position += _hunter._directionalVelocity * Time.deltaTime;
-
-        if (Vector3.Distance(_hunter.transform.position, _hunter.patrolPoints[_targetPoint].position) < 0.5f)
+        if (_hasReturned)
         {
-            ChangeWaypoint();
+            Vector3 patrolPointPosition = _hunter.patrolPoints[_targetPoint].transform.position;
+
+            Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, patrolPointPosition, _hunter._steeringForce);
+            _hunter.SetVelocity(desiredVelocity);
+
+            _hunter.transform.position += _hunter._directionalVelocity * Time.deltaTime;
+
+            if (Vector3.Distance(_hunter.transform.position, patrolPointPosition) < 0.5f)
+            {
+                ChangeWaypoint();
+            }
         }
     }
 
     public void OnSleep()
     {
+        _isFirstPatrol = false;
+        _hasReturned = false;
+        returnNode = NodeManager.Instance.GetClosestNode(_hunter.patrolPoints[_targetPoint].transform.position);
+
         return;
     }
 
@@ -74,7 +101,7 @@ public class HunterPatrol : IState
     {
         _targetPoint++;
 
-        if (_targetPoint >= _hunter.patrolPoints.Length)
+        if (_targetPoint >= _hunter.patrolPoints.Count)
         {
             _targetPoint = 0;
         }

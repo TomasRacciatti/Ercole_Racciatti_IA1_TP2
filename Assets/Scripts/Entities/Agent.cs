@@ -69,13 +69,10 @@ public class Agent : Entity
         
         transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, lookAroundSpeed * Time.deltaTime);
 
-        Debug.Log($"LookAround: Current Rotation = {transform.rotation.eulerAngles.y}, Target Rotation = {targetRotation.eulerAngles.y}");
-
         if (Quaternion.Angle(transform.rotation, targetRotation) < 2f)
         {
             rotationState = (rotationState + 1) % 5;
             rotationStateChanged = true;
-            Debug.Log($"LookAround: Reached target rotation. Moving to rotation state {rotationState}");
         }
     }
 }

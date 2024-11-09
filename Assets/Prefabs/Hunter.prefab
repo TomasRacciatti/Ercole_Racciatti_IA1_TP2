@@ -126,7 +126,7 @@ MonoBehaviour:
   _speedPropery: 0
   speed: 5
   rotationSpeed: 5
-  lookAroundSpeed: 45
+  lookAroundSpeed: 70
   lookingAround: 0
   _steeringForce: 0.1
   maxFutureTime: 2
@@ -139,12 +139,7 @@ MonoBehaviour:
   startingNode: {fileID: 0}
   currentPathIndex: 0
   destroyDistance: 1
-  patrolPoints:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  patrolPoints: []
   target: {fileID: 0}
   playerLayerMask:
     serializedVersion: 2
