@@ -63,10 +63,28 @@ public class HunterPatrol : IState
 
         if (_hasReturned)
         {
+            
+            Node nextPatrolPoint = _hunter.patrolPoints[_targetPoint];
+
+            if (_hunter.pathList == null || _hunter.currentPathIndex >= _hunter.pathList.Count)
+            {
+                _hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, nextPatrolPoint);
+                _hunter.currentPathIndex = 0;
+            }
+
+            PathFinding.MoveAlongPath(_hunter, _hunter.pathList);
+
+            if (_hunter.currentPathIndex >= _hunter.pathList.Count)
+            {
+                ChangeWaypoint();
+            }
+            
+
+            // CAMBIAR ESTA LOGICA POR UNA QUE USE PATH FINDING
+
+            /*
             Vector3 patrolPointPosition = _hunter.patrolPoints[_targetPoint].transform.position;
-
-            // Tal vez podria cambiar esta logica por una que tambien use path finding => me ahorraria poner cada nodo individual
-
+           
             Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, patrolPointPosition, _hunter._steeringForce);
             _hunter.SetVelocity(desiredVelocity);
 
@@ -76,6 +94,7 @@ public class HunterPatrol : IState
             {
                 ChangeWaypoint();
             }
+            */
         }
     }
 
@@ -83,7 +102,8 @@ public class HunterPatrol : IState
     {
         _isFirstPatrol = false;
         _hasReturned = false;
-        returnNode = NodeManager.Instance.GetClosestNode(_hunter.patrolPoints[_targetPoint].transform.position);
+
+        returnNode = _hunter.patrolPoints[_targetPoint];
 
         return;
     }

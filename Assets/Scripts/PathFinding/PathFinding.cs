@@ -7,7 +7,15 @@ public static class PathFinding
 
     public static List<Node> CalculatePathBFS(Node startingNode, Node finishNode)
     {
-        //Debug.Log($"Calculating path from {startingNode.name} to {finishNode.name}");
+        if (startingNode == null || finishNode == null)
+        {
+            if (startingNode == null)
+                Debug.LogError("CalculatePathBFS: startingNode is null.");
+            else
+                Debug.LogError("CalculatePathBFS: finishNode is null.");
+
+            return new List<Node>(); // Return an empty path to avoid further errors
+        }
 
         Queue<Node> frontier = new Queue<Node>();
         frontier.Enqueue(startingNode);

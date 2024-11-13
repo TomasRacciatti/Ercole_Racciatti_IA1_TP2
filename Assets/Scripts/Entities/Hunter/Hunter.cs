@@ -26,6 +26,11 @@ public class Hunter : Agent
 
     }
 
+    private void Start()
+    {
+        startingNode = NodeManager.Instance.GetClosestNode(transform.position);
+    }
+
 
     private void Update()
     {
