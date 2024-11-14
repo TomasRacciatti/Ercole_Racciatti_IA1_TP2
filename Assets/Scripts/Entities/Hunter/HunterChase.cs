@@ -34,7 +34,11 @@ public class HunterChase : IState
 
             if (Vector3.Distance(targetPosition, _hunter.transform.position) < _hunter.destroyDistance)
             {
-                // GAME OVER LOGIC
+                if(!GameManager.Instance.gameOver)
+                {
+                    GameManager.Instance.gameOver = true;
+                    MenuManager.Instance.ShowGameOverScreen();
+                }
                 return;
             }
 

@@ -6,16 +6,15 @@ public class Hunter : Agent
 {
 
     public float destroyDistance = 2f;
-    //public Transform[] patrolPoints;
     public List<Node> patrolPoints;
-    public FSM stateMachine;
+    private readonly FSM stateMachine = new FSM();
 
     public Player target;
     public LayerMask playerLayerMask;
 
     private void Awake()
     {
-        stateMachine = new();
+        //stateMachine = new();
 
 
         stateMachine.AddNewState<HunterSearch>().SetAgent(this);

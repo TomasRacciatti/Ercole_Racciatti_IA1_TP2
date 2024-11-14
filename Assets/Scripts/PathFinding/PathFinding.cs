@@ -220,12 +220,14 @@ public static class PathFinding
             foreach (var neighbour in currentNode.Neighbours)
             {
                 float distanceBetween = Vector3.Distance(currentNode.transform.position, neighbour.transform.position);
-
+                float manhattanDist = ManhattanDistance(finishNode.transform.position, neighbour.transform.position);
                 float newCost = costSoFar[currentNode] + neighbour.OriginalWeight + distanceBetween;
 
-                if (!costSoFar.ContainsKey(neighbour) || newCost < costSoFar[neighbour])
+                bool containsNeighbour = costSoFar.ContainsKey(neighbour);
+
+                if (!containsNeighbour || newCost < costSoFar[neighbour])
                 {
-                    if (costSoFar.ContainsKey(neighbour))
+                    if (containsNeighbour)
                     {
                         costSoFar[neighbour] = newCost;
                     }
@@ -233,8 +235,8 @@ public static class PathFinding
                     {
                         costSoFar.Add(neighbour, newCost);
                     }
-
-                    neighbour.Weight = newCost + ManhattanDistance(finishNode.transform.position, neighbour.transform.position);
+                 
+                    neighbour.Weight = newCost + manhattanDist;
                     frontier.Enqueue(neighbour);
 
 
@@ -311,7 +313,7 @@ public static class PathFinding
         }
         else
         {
-            //Debug.Log("Hunter: Path completed or no path available.");
+            //Debug.Log("Hunter path completed or no path available.");
         }
     }
 }

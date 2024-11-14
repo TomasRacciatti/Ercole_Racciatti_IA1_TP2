@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<Hunter> _hunters;
     public bool playerFound;
+    public bool gameWon = false;
+    public bool gameOver = false;
     [SerializeField] private float lostSightTimer = 10f;
     [SerializeField] private float sightTimerCounter;
 
