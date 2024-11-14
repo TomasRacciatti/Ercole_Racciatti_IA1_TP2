@@ -13,6 +13,8 @@ public class NodeManager : MonoBehaviour
         set => _nodeList = value;
     }
 
+    public WeightArea weightArea;
+
     public Node targetNode;
 
     private void Awake()
@@ -23,9 +25,18 @@ public class NodeManager : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject); 
+        DontDestroyOnLoad(gameObject);
 
         _nodeList = new List<Node>(FindObjectsOfType<Node>());
+    }
+
+    private void CalculateInitialWeight()
+    {
+        foreach (var node in _nodeList)
+        {
+            node.OriginalWeight = weightArea.GetAreaWeight(node.transform.position);
+            node.Weight = node.OriginalWeight;
+        }
     }
 
     public Node GetClosestNode(Vector3 position)

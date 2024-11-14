@@ -42,7 +42,7 @@ public class HunterSearch : IState
         
         if (_hunter.pathList == null || _hunter.pathList.Count == 0)
         {
-            _hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, NodeManager.Instance.targetNode);
+            _hunter.pathList = PathFinding.CalculatePathDijkstra(_hunter.startingNode, NodeManager.Instance.targetNode);
             _hunter.currentPathIndex = 0;
             lastTargetNode = NodeManager.Instance.targetNode;
         }
@@ -51,7 +51,7 @@ public class HunterSearch : IState
         {
             lastTargetNode = NodeManager.Instance.targetNode;
 
-            _hunter.pathList = PathFinding.CalculatePathBFS(_hunter.startingNode, NodeManager.Instance.targetNode);
+            _hunter.pathList = PathFinding.CalculatePathDijkstra(_hunter.startingNode, NodeManager.Instance.targetNode);
             _hunter.currentPathIndex = 0;
         }
 

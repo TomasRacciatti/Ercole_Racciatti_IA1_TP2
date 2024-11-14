@@ -14,7 +14,7 @@ public static class PathFinding
             else
                 Debug.LogError("CalculatePathBFS: finishNode is null.");
 
-            return new List<Node>(); // Return an empty path to avoid further errors
+            return new List<Node>();
         }
 
         Queue<Node> frontier = new Queue<Node>();
@@ -67,6 +67,107 @@ public static class PathFinding
     }
 
 
+
+    public static List<Node> CalculatePathDijkstra(Node startingNode, Node finishNode)
+    {
+        if (startingNode == null || finishNode == null)
+        {
+            if (startingNode == null)
+                Debug.LogError("CalculatePathDijkstra: startingNode is null.");
+            else
+                Debug.LogError("CalculatePathDijkstra: finishNode is null.");
+
+            return new List<Node>();
+        }
+
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>();
+        startingNode.Weight = 0;
+        frontier.Enqueue(startingNode);
+
+        Dictionary<Node, Node> comesFrom = new Dictionary<Node, Node>();
+        comesFrom.Add(startingNode, null);
+
+        Dictionary<Node, float> costSoFar = new Dictionary<Node, float>();
+        costSoFar.Add(startingNode, 0);
+
+        while (frontier.Count > 0)
+        {
+            Node currentNode = frontier.Dequeue();
+
+            bool isDone = false;
+
+            foreach (var neighbour in currentNode.Neighbours)
+            {
+                float distanceBetween = Vector3.Distance(currentNode.transform.position, neighbour.transform.position);
+
+                float newCost = costSoFar[currentNode] + neighbour.OriginalWeight + distanceBetween;
+                
+                if (!costSoFar.ContainsKey(neighbour) || newCost < costSoFar[neighbour])
+                {
+
+
+                    if (costSoFar.ContainsKey(neighbour))
+                    {
+                        costSoFar[neighbour] = newCost;
+                    }
+                    else
+                    {
+                        costSoFar.Add(neighbour, newCost);
+                    }
+
+                    neighbour.Weight = newCost;
+                    frontier.Enqueue(neighbour);
+
+
+                    if (costSoFar.ContainsKey(neighbour))
+                    {
+                        comesFrom[neighbour] = currentNode;
+                    }
+                    else
+                    {
+                        comesFrom.Add(neighbour, currentNode);
+                    }
+
+                    if (neighbour == finishNode)
+                    {
+                        isDone = true;
+                        break;
+                    }
+                }
+            }
+
+            if (isDone) break;
+        }
+
+        return CalculatePath(startingNode, finishNode, comesFrom);
+    }
+
+
+    
+    private static List<Node> CalculatePath (Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
+    {
+        List<Node> path = new List<Node>();
+
+        if (comesFrom.ContainsKey(finishNode))
+        {
+            Node currentNode = finishNode;
+
+            while (comesFrom[currentNode] != null)
+            {
+                path.Add(currentNode);
+                currentNode = comesFrom[currentNode];
+            }
+
+            path.Add(startingNode);
+            path.Reverse();
+        }
+
+        return path;
+    }
+    
+    
+    
+    
     public static void MoveAlongPath(Agent agent, List<Node> pathList)
     {
         if (pathList != null && agent.currentPathIndex < pathList.Count)
