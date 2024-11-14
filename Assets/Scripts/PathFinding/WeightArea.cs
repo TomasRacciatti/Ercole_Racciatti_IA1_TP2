@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class WeightArea : MonoBehaviour
 {
-    // Si bien no creo que use este script en el proyecto, me viene bien tenerlo y entenderlo.
+    // Si bien usamos este script en el proyecto, nos viene bien tenerlo y entenderlo.
 
 
     [SerializeField] private float _areaRadius;
