@@ -194,9 +194,9 @@ public static class PathFinding
         if (startingNode == null || finishNode == null)
         {
             if (startingNode == null)
-                Debug.LogError("CalculatePathAStar: startingNode is null.");
+                Debug.Log("CalculatePathAStar: startingNode is null.");
             else
-                Debug.LogError("CalculatePathAStar: finishNode is null.");
+                Debug.Log("CalculatePathAStar: finishNode is null.");
 
             return new List<Node>();
         }

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -10,8 +9,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<Hunter> _hunters;
     public bool playerFound;
-    public bool gameOver;
-    public bool gameWon;
+    //public bool gameOver;
+    //public bool gameWon;
     [SerializeField] private float lostSightTimer = 10f;
     [SerializeField] private float sightTimerCounter;
 
@@ -71,27 +70,5 @@ public class GameManager : MonoBehaviour
                 playerFound = false;
             }
         }
-    }
-
-
-    public void TriggerGameOver()
-    {
-        gameOver = true;
-        SceneManager.LoadScene("CanvasScene"); 
-    }
-
-
-    public void TriggerVictory()
-    {
-        gameWon = true;
-        SceneManager.LoadScene("CanvasScene");
-    }
-
-    public void RetryGame()
-    {
-        gameOver = false;
-        gameWon = false;
-        playerFound = false;
-        sightTimerCounter = 0;
     }
 }

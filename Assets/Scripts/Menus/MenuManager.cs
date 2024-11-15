@@ -9,6 +9,7 @@ public class MenuManager : MonoBehaviour
 
     public GameObject GameOverBG;
     public GameObject VictoryBG;
+    public GameObject PlayBTN;
     public GameObject RetryBTN;
     public GameObject QuitBTN;
 
@@ -17,7 +18,6 @@ public class MenuManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            //DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -25,15 +25,14 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    private void Start()
+    private void Update()
     {
-        if (GameManager.Instance.gameOver)
+        if (GameOverManager.Instance != null)
         {
-            ShowGameOverScreen();
-        }
-        else
-        {
-            ShowVictoryScreen();
+            if (GameOverManager.Instance.gameOver)
+                ShowGameOverScreen();
+            else if (GameOverManager.Instance.gameWon)
+                ShowVictoryScreen();
         }
     }
 
@@ -42,6 +41,7 @@ public class MenuManager : MonoBehaviour
 
         GameOverBG.SetActive(true);
         VictoryBG.SetActive(false);
+        PlayBTN.SetActive(false);
         RetryBTN.SetActive(true);
         QuitBTN.SetActive(true);
     }
@@ -50,19 +50,23 @@ public class MenuManager : MonoBehaviour
     {
         GameOverBG.SetActive(false);
         VictoryBG.SetActive(true);
+        PlayBTN.SetActive(false);
         RetryBTN.SetActive(true);
         QuitBTN.SetActive(true);
     }
 
     public void RetryLevel()
     {
+        GameOverBG.SetActive(false);
+        VictoryBG.SetActive(false);
+        PlayBTN.SetActive(false);
+        RetryBTN.SetActive(false);
+        QuitBTN.SetActive(false);
+
+        GameOverManager.Instance.gameOver = false;
+        GameOverManager.Instance.gameWon = false;
+
         SceneManager.LoadScene("Game");
-
-
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.RetryGame();
-        }
     }
 
     public void QuitGame()

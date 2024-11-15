@@ -909,6 +909,9 @@ MonoBehaviour:
   startingNode: {fileID: 0}
   currentPathIndex: 0
   _speed: 7
+  _victoryLayerMask:
+    serializedVersion: 2
+    m_Bits: 67108864
 --- !u!1 &202059834
 GameObject:
   m_ObjectHideFlags: 0
@@ -11286,8 +11289,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hunters: []
   playerFound: 0
-  gameOver: 0
-  gameWon: 0
   lostSightTimer: 10
   sightTimerCounter: 0
 --- !u!4 &1193087279
@@ -11968,7 +11969,7 @@ GameObject:
   - component: {fileID: 1447910340}
   - component: {fileID: 1447910339}
   - component: {fileID: 1447910338}
-  m_Layer: 0
+  m_Layer: 26
   m_Name: VictoryZone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -13991,6 +13992,52 @@ MonoBehaviour:
   _neighbours:
   - {fileID: 691052844}
   - {fileID: 202059835}
+--- !u!1 &2113292232
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2113292234}
+  - component: {fileID: 2113292233}
+  m_Layer: 0
+  m_Name: GameOverManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2113292233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113292232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21624f453b318ac45b11a56caa253a45, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameOver: 0
+  gameWon: 0
+--- !u!4 &2113292234
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2113292232}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 692.98663, y: 277.53897, z: 2.6715388}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2116378038
 GameObject:
   m_ObjectHideFlags: 0
@@ -14209,3 +14256,4 @@ SceneRoots:
   - {fileID: 1447910341}
   - {fileID: 1193087279}
   - {fileID: 674592233}
+  - {fileID: 2113292234}
