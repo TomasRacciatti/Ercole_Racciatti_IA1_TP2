@@ -15,14 +15,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float sightTimerCounter;
 
 
-    [Header("Path Finding")] // Deberia ir en el game manager o un "Node Manager"?
-    [SerializeField] private List<Node> _nodeList;
-    public List<Node> NodeList
-    {
-        get => _nodeList;
-        set => _nodeList = value;
-    }
-
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -78,26 +70,5 @@ public class GameManager : MonoBehaviour
                 playerFound = false;
             }
         }
-    }
-
-    // Esta funcion me va a permitir sacar el nodo mas cercano al jugador cuando esta siendo observado
-    // Deberia estar en el Game Manager?
-    public Node GetClosestNode(Vector3 position)
-    {
-        float distanceSqr = float.MaxValue;
-        Node closestNode = null;
-
-        foreach (Node node in _nodeList)
-        {
-            float newDistanceSqr = (node.transform.position - position).sqrMagnitude;
-
-            if (newDistanceSqr < distanceSqr)
-            {
-                distanceSqr = newDistanceSqr;
-                closestNode = node;
-            }
-        }
-
-        return closestNode;
     }
 }
