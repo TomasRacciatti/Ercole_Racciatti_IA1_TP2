@@ -17,16 +17,29 @@ public class MenuManager : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            //DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); 
+            Destroy(gameObject);
+        }
+    }
+
+    private void Start()
+    {
+        if (GameManager.Instance.gameOver)
+        {
+            ShowGameOverScreen();
+        }
+        else
+        {
+            ShowVictoryScreen();
         }
     }
 
     public void ShowGameOverScreen()
     {
+
         GameOverBG.SetActive(true);
         VictoryBG.SetActive(false);
         RetryBTN.SetActive(true);
@@ -41,9 +54,15 @@ public class MenuManager : MonoBehaviour
         QuitBTN.SetActive(true);
     }
 
-public void RetryLevel()
+    public void RetryLevel()
     {
-        SceneManager.LoadScene("Game", LoadSceneMode.Single);
+        SceneManager.LoadScene("Game");
+
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.RetryGame();
+        }
     }
 
     public void QuitGame()

@@ -8,5 +8,15 @@ public class Entity : MonoBehaviour
     public Vector3 Forward => transform.forward;
     public virtual Vector3 Velocity => Vector3.zero;
 
+    private Vector3 initialPosition;
 
+    private void Start()
+    {
+        initialPosition = transform.position;
+    }
+
+    public void ResetState()
+    {
+        transform.position = initialPosition;
+    }
 }

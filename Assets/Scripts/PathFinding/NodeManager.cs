@@ -15,17 +15,21 @@ public class NodeManager : MonoBehaviour
 
     public WeightArea weightArea;
 
-    public Node targetNode;
+    public Node lastTargetNode;
 
     private void Awake()
     {
+        /*
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+        */
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
+
+        // Empeza desde la escena del menu y darle play y salir desde esa
 
         _nodeList = new List<Node>(FindObjectsOfType<Node>());
     }

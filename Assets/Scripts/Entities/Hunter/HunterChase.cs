@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class HunterChase : IState
 {
@@ -29,7 +30,7 @@ public class HunterChase : IState
             Vector3 targetPosition = target.Position;
             Vector3 targetVelocity = target.Velocity;
 
-            NodeManager.Instance.targetNode = NodeManager.Instance.GetClosestNode(targetPosition);  // El hunter que ve al jugador settea el nodo mas cercano
+            NodeManager.Instance.lastTargetNode = NodeManager.Instance.GetClosestNode(targetPosition);  // El hunter que ve al jugador settea el nodo mas cercano
 
 
             if (Vector3.Distance(targetPosition, _hunter.transform.position) < _hunter.destroyDistance)
@@ -37,7 +38,7 @@ public class HunterChase : IState
                 if(!GameManager.Instance.gameOver)
                 {
                     GameManager.Instance.gameOver = true;
-                    MenuManager.Instance.ShowGameOverScreen();
+                    GameManager.Instance.TriggerGameOver();
                 }
                 return;
             }
