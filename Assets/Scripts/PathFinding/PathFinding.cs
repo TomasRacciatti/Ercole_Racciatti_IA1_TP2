@@ -188,6 +188,8 @@ public static class PathFinding
     }
 
 
+    // El pedido de agent por parametro era para tener la posicion inicial cuando intente aplicar theeta*.
+    // Sin theeta, es innecesario pero por ahora lo dejo.
     public static List<Vector3> CalculatePathAStar(Agent agent, Node startingNode, Node finishNode)
     {
         if (startingNode == null || finishNode == null)
