@@ -5,7 +5,7 @@ using UnityEngine;
 public static class PathFinding
 {
 
-    public static List<Node> CalculatePathBFS(Node startingNode, Node finishNode)
+    public static List<Vector3> CalculatePathBFS(Node startingNode, Node finishNode)
     {
         if (startingNode == null || finishNode == null)
         {
@@ -14,7 +14,7 @@ public static class PathFinding
             else
                 Debug.LogError("CalculatePathBFS: finishNode is null.");
 
-            return new List<Node>();
+            return new List<Vector3>();
         }
 
         Queue<Node> frontier = new Queue<Node>();
@@ -47,7 +47,7 @@ public static class PathFinding
             if (isDone) break;
         }
 
-        List<Node> path = new List<Node>();
+        List<Vector3> path = new List<Vector3>();
 
         if (comesFrom.ContainsKey(finishNode))
         {
@@ -55,11 +55,11 @@ public static class PathFinding
 
             while (comesFrom[currentNode] != null)
             {
-                path.Add(currentNode);
+                path.Add(currentNode.transform.position);
                 currentNode = comesFrom[currentNode];
             }
 
-            path.Add(startingNode);
+            path.Add(startingNode.transform.position);
             path.Reverse();
         }
 
@@ -67,7 +67,7 @@ public static class PathFinding
     }
 
 
-    public static List<Node> CalculatePathDijkstra(Node startingNode, Node finishNode)
+    public static List<Vector3> CalculatePathDijkstra(Node startingNode, Node finishNode)
     {
         if (startingNode == null || finishNode == null)
         {
@@ -76,7 +76,7 @@ public static class PathFinding
             else
                 Debug.LogError("CalculatePathDijkstra: finishNode is null.");
 
-            return new List<Node>();
+            return new List<Vector3>();
         }
 
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
@@ -140,7 +140,7 @@ public static class PathFinding
     }
 
 
-    public static List<Node> CalculatePathGreedyBFS(Node startingNode, Node finishNode)
+    public static List<Vector3> CalculatePathGreedyBFS(Node startingNode, Node finishNode)
     {
         if (startingNode == null || finishNode == null)
         {
@@ -149,7 +149,7 @@ public static class PathFinding
             else
                 Debug.LogError("CalculatePathGreedyBFS: finishNode is null.");
 
-            return new List<Node>();
+            return new List<Vector3>();
         }
 
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
@@ -188,7 +188,7 @@ public static class PathFinding
     }
 
 
-    public static List<Node> CalculatePathAStar(Node startingNode, Node finishNode)
+    public static List<Vector3> CalculatePathAStar(Node startingNode, Node finishNode)
     {
         if (startingNode == null || finishNode == null)
         {
@@ -197,7 +197,7 @@ public static class PathFinding
             else
                 Debug.Log("CalculatePathAStar: finishNode is null.");
 
-            return new List<Node>();
+            return new List<Vector3>();
         }
 
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
@@ -263,86 +263,9 @@ public static class PathFinding
     }
 
 
-    public static List<Node> CalculatePathTheetaStar(Node startingNode, Node finishNode)
+    private static List<Vector3> CalculatePath_TheetaStar(Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
     {
-        if (startingNode == null || finishNode == null)
-        {
-            if (startingNode == null)
-                Debug.Log("CalculatePathTheetaStar: startingNode is null.");
-            else
-                Debug.Log("CalculatePathTheetaStar: finishNode is null.");
-
-            return new List<Node>();
-        }
-
-        PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-        startingNode.Weight = 0;
-        frontier.Enqueue(startingNode, 0);
-
-        Dictionary<Node, Node> comesFrom = new Dictionary<Node, Node>();
-        comesFrom.Add(startingNode, null);
-
-        Dictionary<Node, float> costSoFar = new Dictionary<Node, float>();
-        costSoFar.Add(startingNode, 0);
-
-        while (frontier.Count > 0)
-        {
-            Node currentNode = frontier.Dequeue();
-
-            bool isDone = false;
-
-            foreach (var neighbour in currentNode.Neighbours)
-            {
-                float distanceBetween = Vector3.Distance(currentNode.transform.position, neighbour.transform.position);
-                float manhattanDist = ManhattanDistance(finishNode.transform.position, neighbour.transform.position);
-                float newCost = costSoFar[currentNode] + distanceBetween;
-
-                bool containsNeighbour = costSoFar.ContainsKey(neighbour);
-
-                if (!containsNeighbour || newCost < costSoFar[neighbour])
-                {
-                    if (containsNeighbour)
-                    {
-                        costSoFar[neighbour] = newCost;
-                    }
-                    else
-                    {
-                        costSoFar.Add(neighbour, newCost);
-                    }
-
-                    //neighbour.Weight = newCost + manhattanDist;
-                    frontier.Enqueue(neighbour, newCost + manhattanDist);
-
-
-                    if (costSoFar.ContainsKey(neighbour))
-                    {
-                        comesFrom[neighbour] = currentNode;
-                    }
-                    else
-                    {
-                        comesFrom.Add(neighbour, currentNode);
-                    }
-
-                    if (neighbour == finishNode)
-                    {
-                        isDone = true;
-                        break;
-                    }
-                }
-            }
-
-            if (isDone) break;
-        }
-
-        return CalculatePath(startingNode, finishNode, comesFrom);
-    }
-
-
-
-
-    private static List<Node> CalculatePath (Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
-    {
-        List<Node> path = new List<Node>();
+        List<Vector3> path = new List<Vector3>();
 
         if (comesFrom.ContainsKey(finishNode))
         {
@@ -350,11 +273,34 @@ public static class PathFinding
 
             while (comesFrom[currentNode] != null)
             {
-                path.Add(currentNode);
+                path.Add(currentNode.transform.position);
                 currentNode = comesFrom[currentNode];
             }
 
-            path.Add(startingNode);
+            path.Add(startingNode.transform.position);
+            path.Reverse();
+        }
+
+        return path;
+    }
+
+
+
+    private static List<Vector3> CalculatePath (Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
+    {
+        List<Vector3> path = new List<Vector3>();
+
+        if (comesFrom.ContainsKey(finishNode))
+        {
+            Node currentNode = finishNode;
+
+            while (comesFrom[currentNode] != null)
+            {
+                path.Add(currentNode.transform.position);
+                currentNode = comesFrom[currentNode];
+            }
+
+            path.Add(startingNode.transform.position);
             path.Reverse();
         }
 
@@ -369,12 +315,12 @@ public static class PathFinding
 
 
     
-    public static void MoveAlongPath(Agent agent, List<Node> pathList)
+    public static void MoveAlongPath(Agent agent, List<Vector3> pathList)
     {
         if (pathList != null && agent.currentPathIndex < pathList.Count)
         {   
-            Node currentNode = pathList[agent.currentPathIndex];
-            Vector3 nodePosition = currentNode.transform.position;
+            Vector3 currentNode = pathList[agent.currentPathIndex];
+            Vector3 nodePosition = currentNode;
 
             Vector3 desiredVelocity = SteeringBehaviours.Seek(agent.transform.position, agent.speed, agent._directionalVelocity, nodePosition, agent._steeringForce);
             agent.SetVelocity(desiredVelocity);
@@ -382,7 +328,7 @@ public static class PathFinding
             agent.transform.position += agent._directionalVelocity * Time.deltaTime;
 
 
-            if (Vector3.Distance(agent.transform.position, currentNode.transform.position) < 0.5f)
+            if (Vector3.Distance(agent.transform.position, currentNode) < 0.5f)
             {
                 agent.currentPathIndex++;
             }

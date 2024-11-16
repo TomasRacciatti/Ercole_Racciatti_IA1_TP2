@@ -25,7 +25,7 @@ public class Agent : Entity
     [SerializeField] protected float _visionRadius;
     [SerializeField] protected float _visionAngle;
 
-    public List<Node> pathList = new List<Node>();
+    public List<Vector3> pathList = new List<Vector3>();
     public Node startingNode;
     public int currentPathIndex = 0;
 
