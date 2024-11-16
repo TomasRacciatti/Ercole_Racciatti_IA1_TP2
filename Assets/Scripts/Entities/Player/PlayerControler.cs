@@ -11,11 +11,9 @@ public class PlayerControler : Player
 
         Vector3 moveDirection = new Vector3(moveX, 0f, moveZ).normalized;
 
-        //transform.Translate(moveDirection * _speed * Time.deltaTime, Space.World);
+        Vector3 futurePosition = transform.position + moveDirection * _speed * Time.deltaTime;
 
-        Vector3 playerPosition = transform.position + moveDirection * _speed * Time.deltaTime;
-
-        if (!DetectCollision(playerPosition, _collisionBoxSize, obstacleMask))
+        if (!DetectCollision(futurePosition, _collisionBoxSize, obstacleMask))
         {
             transform.Translate(moveDirection * _speed * Time.deltaTime, Space.World);
         }
