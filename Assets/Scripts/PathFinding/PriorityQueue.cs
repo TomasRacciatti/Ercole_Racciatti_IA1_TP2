@@ -1,29 +1,45 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class PriorityQueue<T> where T : IWeighted
+public class PriorityQueue<T>
 {
-    private List<T> _internal;
+    public enum RuleSet
+    {
+        MaxHeap,
+        MinHeap,
+    }
+
+    private List<PriorityItem> _internal;
 
     public int Count => _internal.Count;
     public bool IsEmpty => _internal.Count == 0;
+
+    private readonly RuleSet _heapRule;
 
     private const int INVALID_INDEX = -1;
 
     public PriorityQueue()
     {
-        _internal = new List<T>();
+        _heapRule = RuleSet.MinHeap;
+        _internal = new List<PriorityItem>();
     }
-    public PriorityQueue(PriorityQueue<T> collection)
+
+    public PriorityQueue(RuleSet ruleSet)
     {
-        _internal = new List<T>(collection._internal);
+        _heapRule = ruleSet;
+        _internal = new List<PriorityItem>();
+    }
+
+    public PriorityQueue(PriorityQueue<T> other)
+    {
+        _heapRule = other._heapRule;
+        _internal = new List<PriorityItem>(other._internal);
     }
 
     public void Reprioritize()
     {
         var oldInternal = _internal;
-        _internal = new List<T>();
+        _internal = new List<PriorityItem>();
 
         for (int i = 0; i < oldInternal.Count; i++)
         {
@@ -31,9 +47,14 @@ public class PriorityQueue<T> where T : IWeighted
         }
     }
 
-    public void Enqueue(T storeObject)
+    public void Enqueue(T obj, float priority)
     {
-        _internal.Add(storeObject);
+        Enqueue(new PriorityItem(obj, priority));
+    }
+
+    public void Enqueue(PriorityItem item)
+    {
+        _internal.Add(item);
 
         RunEnqueueRules(_internal.Count - 1);
     }
@@ -48,12 +69,20 @@ public class PriorityQueue<T> where T : IWeighted
 
         RunDequeueRules(0);
 
-        return temp;
+        return temp.Item;
     }
 
     public bool Contains(T item)
     {
-        return _internal.Contains(item);
+        foreach (var priorityItem in _internal)
+        {
+            if (priorityItem.Equals(item))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void RunEnqueueRules(int index)
@@ -62,12 +91,14 @@ public class PriorityQueue<T> where T : IWeighted
 
         if (parentIndex == INVALID_INDEX) return;
 
-        if (_internal[index].Weight < _internal[parentIndex].Weight)
+        //if (_internal[index].Priority < _internal[parentIndex].Priority)
+        if (IsBetter(_internal[index], _internal[parentIndex]))
         {
             (_internal[parentIndex], _internal[index]) = (_internal[index], _internal[parentIndex]);
             RunEnqueueRules(parentIndex);
         }
     }
+
     private void RunDequeueRules(int index)
     {
         var leftChild = GetLeftDescendant(index);
@@ -76,22 +107,35 @@ public class PriorityQueue<T> where T : IWeighted
         if (leftChild == INVALID_INDEX) return;
         if (rightChild == INVALID_INDEX)
         {
-            if (_internal[leftChild].Weight < _internal[index].Weight)
+            //if (_internal[leftChild].Priority < _internal[index].Priority)
+            if (IsBetter(_internal[leftChild], _internal[index]))
             {
                 (_internal[index], _internal[leftChild]) = (_internal[leftChild], _internal[index]);
             }
             return;
         }
 
-        var biggerChildIndex = _internal[leftChild].Weight < _internal[rightChild].Weight
+        //var biggerChildIndex = _internal[leftChild].Priority < _internal[rightChild].Priority
+        var biggerChildIndex = IsBetter(_internal[leftChild], _internal[rightChild])
             ? leftChild
             : rightChild;
 
-        if (_internal[biggerChildIndex].Weight < _internal[index].Weight)
+        //if (_internal[biggerChildIndex].Priority < _internal[index].Priority)
+        if (IsBetter(_internal[biggerChildIndex], _internal[index]))
         {
             (_internal[index], _internal[biggerChildIndex]) = (_internal[biggerChildIndex], _internal[index]);
             RunDequeueRules(biggerChildIndex);
         }
+    }
+
+    private bool IsBetter(PriorityItem a, PriorityItem b)
+    {
+        return _heapRule switch
+        {
+            RuleSet.MaxHeap => a.Priority > b.Priority,
+            RuleSet.MinHeap => a.Priority < b.Priority,
+            _ => false
+        };
     }
 
     private int GetParent(int index)
@@ -122,9 +166,55 @@ public class PriorityQueue<T> where T : IWeighted
         return rString;
     }
 
-}
+    public class PriorityItem : IEquatable<PriorityItem>
+    {
+        public T Item => _item;
+        public float Priority => _priority;
 
-public interface IWeighted
-{
-    float Weight { get; }
+        private readonly T _item;
+        private float _priority;
+
+        public PriorityItem(T item, float priority)
+        {
+            _item = item;
+            _priority = priority;
+        }
+
+        public bool Equals(T other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return EqualityComparer<T>.Default.Equals(_item, other);
+        }
+
+        public bool Equals(PriorityItem other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return EqualityComparer<T>.Default.Equals(_item, other._item);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((PriorityItem)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return EqualityComparer<T>.Default.GetHashCode(_item);
+        }
+
+        public static bool operator ==(PriorityItem left, PriorityItem right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(PriorityItem left, PriorityItem right)
+        {
+            return !Equals(left, right);
+        }
+    }
 }
