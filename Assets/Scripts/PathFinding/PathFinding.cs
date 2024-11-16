@@ -188,7 +188,7 @@ public static class PathFinding
     }
 
 
-    public static List<Vector3> CalculatePathAStar(Node startingNode, Node finishNode)
+    public static List<Vector3> CalculatePathAStar(Agent agent, Node startingNode, Node finishNode)
     {
         if (startingNode == null || finishNode == null)
         {
@@ -234,8 +234,7 @@ public static class PathFinding
                     {
                         costSoFar.Add(neighbour, newCost);
                     }
-                 
-                    //neighbour.Weight = newCost + manhattanDist;
+
                     frontier.Enqueue(neighbour, newCost + manhattanDist);
 
 
@@ -259,11 +258,125 @@ public static class PathFinding
             if (isDone) break;
         }
 
-        return CalculatePath(startingNode, finishNode, comesFrom);
+        //return CalculatePath(startingNode, finishNode, comesFrom);
+        //return CalculatePath_TheetaStar(agent, startingNode, finishNode, comesFrom);
+        return CalculatePath_TheetaStar2(startingNode, finishNode, comesFrom);
     }
 
 
-    private static List<Vector3> CalculatePath_TheetaStar(Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
+    public static LayerMask theetaStarObstacles = LayerMask.GetMask("Obstacles");
+    public static float thetaStar_ObstacleCheckRadius = 0.25f;
+
+    // No Funcional
+    private static List<Vector3> CalculatePath_TheetaStar(Agent agent, Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
+    {   
+        List<Vector3> path = new List<Vector3>() { finishNode.transform.position };
+
+        Node currentNode = finishNode;
+        Node previousNode = finishNode;
+        Node anchor = finishNode;
+
+        Vector3 thetaStar_InitialPosition = agent.transform.position;
+
+        while (currentNode != null && comesFrom.ContainsKey(currentNode))
+        {
+            if (currentNode == anchor)
+            {
+                previousNode = currentNode;
+                currentNode = comesFrom[currentNode];
+                continue;
+            }
+
+            Vector3 currentPos = currentNode.transform.position;
+            Vector3 anchorPos = anchor.transform.position;
+            Vector3 direction = currentPos - anchorPos;
+
+            bool isVisible = Physics.SphereCast(anchorPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
+
+            if (isVisible)
+            {
+                previousNode = currentNode;
+                currentNode = comesFrom[currentNode];
+            }
+            else
+            {
+                path.Add(previousNode.transform.position);
+                anchor = previousNode;
+                currentNode = comesFrom[currentNode];
+            }
+        }
+
+        {
+            Vector3 curPos = thetaStar_InitialPosition;
+            Vector3 anchorPos = anchor.transform.position;
+            Vector3 direction = curPos - anchorPos;
+
+            bool isVisible = Physics.SphereCast(anchorPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
+
+
+            if (isVisible)
+            {
+                path.Add(thetaStar_InitialPosition);
+            }
+            else
+            {
+                path.Add(startingNode.transform.position);
+                path.Add(thetaStar_InitialPosition);
+            }
+
+        }
+
+        path.Reverse();
+        return path;
+    }
+
+
+    // No Funcional
+    private static List<Vector3> CalculatePath_TheetaStar2(Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
+    {
+        List<Vector3> path = new List<Vector3>() { finishNode.transform.position };
+
+        Node currentNode = finishNode;
+        Node previousNode = finishNode;
+        Node anchor = finishNode;
+
+        //Vector3 thetaStar_InitialPosition = agent.transform.position;
+
+        while (currentNode != startingNode && comesFrom.ContainsKey(currentNode))
+        {
+            if (currentNode == previousNode)
+            {
+                anchor = currentNode;
+                currentNode = comesFrom[currentNode];
+                continue;
+            }
+
+            Vector3 currentPos = currentNode.transform.position;
+            Vector3 previousPos = previousNode.transform.position;
+            Vector3 direction = currentPos - previousPos;
+
+            bool isVisible = Physics.SphereCast(previousPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
+
+            if (isVisible)
+            {
+                path.Add(anchor.transform.position);
+                previousNode = currentNode;
+            }
+            else
+            {
+                anchor = currentNode;
+                currentNode = comesFrom[currentNode];
+            }
+        }
+
+        path.Add(startingNode.transform.position);
+        path.Reverse();
+        return path;
+    }
+
+
+
+    private static List<Vector3> CalculatePath(Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
     {
         List<Vector3> path = new List<Vector3>();
 
@@ -284,29 +397,6 @@ public static class PathFinding
         return path;
     }
 
-
-
-    private static List<Vector3> CalculatePath (Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
-    {
-        List<Vector3> path = new List<Vector3>();
-
-        if (comesFrom.ContainsKey(finishNode))
-        {
-            Node currentNode = finishNode;
-
-            while (comesFrom[currentNode] != null)
-            {
-                path.Add(currentNode.transform.position);
-                currentNode = comesFrom[currentNode];
-            }
-
-            path.Add(startingNode.transform.position);
-            path.Reverse();
-        }
-
-        return path;
-    }
-    
 
     public static float ManhattanDistance(Vector3 a, Vector3 b)
     {
@@ -314,11 +404,11 @@ public static class PathFinding
     }
 
 
-    
+
     public static void MoveAlongPath(Agent agent, List<Vector3> pathList)
     {
         if (pathList != null && agent.currentPathIndex < pathList.Count)
-        {   
+        {
             Vector3 currentNode = pathList[agent.currentPathIndex];
             Vector3 nodePosition = currentNode;
 

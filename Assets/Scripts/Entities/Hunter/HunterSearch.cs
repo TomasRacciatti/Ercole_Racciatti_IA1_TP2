@@ -17,7 +17,7 @@ public class HunterSearch : IState
 
         if (_hunter.pathList == null || _hunter.pathList.Count == 0)
         {
-            _hunter.pathList = PathFinding.CalculatePathAStar(_hunter.startingNode, NodeManager.Instance.lastTargetNode);
+            _hunter.pathList = PathFinding.CalculatePathAStar(_hunter, _hunter.startingNode, NodeManager.Instance.lastTargetNode);
             _hunter.currentPathIndex = 0;
             lastTargetNode = NodeManager.Instance.lastTargetNode;
         }
@@ -55,7 +55,7 @@ public class HunterSearch : IState
         {
             lastTargetNode = NodeManager.Instance.lastTargetNode;
 
-            _hunter.pathList = PathFinding.CalculatePathAStar(_hunter.startingNode, NodeManager.Instance.lastTargetNode);
+            _hunter.pathList = PathFinding.CalculatePathAStar(_hunter, _hunter.startingNode, NodeManager.Instance.lastTargetNode);
             _hunter.currentPathIndex = 0;
         }
 

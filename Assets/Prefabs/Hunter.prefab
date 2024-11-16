@@ -123,7 +123,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _directionalVelocity: {x: 0, y: 0, z: 0}
-  _speedPropery: 0
   speed: 5
   rotationSpeed: 5
   lookAroundSpeed: 70
