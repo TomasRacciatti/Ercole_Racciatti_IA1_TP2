@@ -258,9 +258,9 @@ public static class PathFinding
             if (isDone) break;
         }
 
-        //return CalculatePath(startingNode, finishNode, comesFrom);
+        return CalculatePath(startingNode, finishNode, comesFrom);
         //return CalculatePath_TheetaStar(agent, startingNode, finishNode, comesFrom);
-        return CalculatePath_TheetaStar2(startingNode, finishNode, comesFrom);
+        //return CalculatePath_TheetaStar2(startingNode, finishNode, comesFrom);
     }
 
 
