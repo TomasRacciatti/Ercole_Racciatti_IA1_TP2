@@ -6,36 +6,22 @@ using UnityEngine;
 public class Player : Agent
 {
     [SerializeField] protected float _speed;
-    [SerializeField] private LayerMask _victoryLayerMask;
-    [SerializeField] private Vector3 _collisionBoxSize = new Vector3(1, 2, 1);
+    [SerializeField] protected LayerMask _victoryLayerMask;
+    [SerializeField] protected Vector3 _collisionBoxSize = new Vector3(1, 2, 1);
 
 
-    private void Update()
+    protected bool DetectCollision(Vector3 position, Vector3 boxSize, LayerMask collisionMask)
     {
-        Vector3 overlapCenter = transform.position;
-        Collider[] hits = Physics.OverlapBox(overlapCenter, _collisionBoxSize / 2, Quaternion.identity, _victoryLayerMask);
+        Collider[] hits = Physics.OverlapBox(position, boxSize / 2, Quaternion.identity, collisionMask);
 
         foreach (var hit in hits)
         {
-            Debug.Log($"Player detected trigger zone: {hit.gameObject.name}");
-
-            if (((1 << hit.gameObject.layer) & _victoryLayerMask) != 0)
+            if (((1 << hit.gameObject.layer) & collisionMask) != 0)
             {
-                Debug.Log("Victory");
-                GameOverManager.Instance.gameWon = true;
-                GameOverManager.Instance.TriggerVictory();
-                return;
+                return true;
             }
         }
-
-        /*
-        if (hits.Length > 0)
-        {
-
-            GameOverManager.Instance.gameWon = true;
-            GameOverManager.Instance.TriggerVictory();
-        }
-        */
+        return false;
     }
 
     private void OnDrawGizmosSelected()
