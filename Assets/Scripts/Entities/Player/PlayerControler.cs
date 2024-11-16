@@ -13,13 +13,15 @@ public class PlayerControler : Player
 
         Vector3 futurePosition = transform.position + moveDirection * _speed * Time.deltaTime;
 
+        
+        // Collide against walls
         if (!DetectCollision(futurePosition, _collisionBoxSize, obstacleMask))
         {
             transform.Translate(moveDirection * _speed * Time.deltaTime, Space.World);
         }
 
-
-        if (DetectCollision(transform.position, _collisionBoxSize, _victoryLayerMask)) // Victory condition
+        // Victory condition
+        if (DetectCollision(transform.position, _collisionBoxSize, _victoryLayerMask)) 
         {
             GameOverManager.Instance.gameWon = true;
             GameOverManager.Instance.TriggerVictory();

@@ -9,10 +9,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private List<Hunter> _hunters;
     public bool playerFound;
-    //public bool gameOver;
-    //public bool gameWon;
     [SerializeField] private float lostSightTimer = 10f;
     [SerializeField] private float sightTimerCounter;
+
+    public Vector3 lastPlayerPosition { get; private set; }
 
 
     private void Awake()
@@ -70,5 +70,10 @@ public class GameManager : MonoBehaviour
                 playerFound = false;
             }
         }
+    }
+
+    public void UpdateLastPlayerPosition(Vector3 position)
+    {
+        lastPlayerPosition = position;
     }
 }

@@ -53,6 +53,7 @@ public class HunterChase : IState
             
             if (GameManager.Instance.playerFound && !AIUtility.IsInFOV(_hunter, targetPosition, _hunter.obstacleMask))
             {
+                GameManager.Instance.UpdateLastPlayerPosition(targetPosition);
                 _manager.SetState<HunterSearch>();
                 return;
             }

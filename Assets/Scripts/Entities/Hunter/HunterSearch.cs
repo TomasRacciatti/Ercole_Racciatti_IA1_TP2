@@ -11,8 +11,17 @@ public class HunterSearch : IState
 
     public void OnAwake()
     {
-        //Debug.Log(_hunter.name + ": Searching");
         _hunter.pathList = null;
+        
+        // Apenas entra calculo el path una sola vez. Si lastTargetNode no cambia, este es el camino que va a quedar
+
+        if (_hunter.pathList == null || _hunter.pathList.Count == 0)
+        {
+            _hunter.pathList = PathFinding.CalculatePathAStar(_hunter.startingNode, NodeManager.Instance.lastTargetNode);
+            _hunter.currentPathIndex = 0;
+            lastTargetNode = NodeManager.Instance.lastTargetNode;
+        }
+
         return;
     }
 
@@ -38,15 +47,10 @@ public class HunterSearch : IState
 
 
         // Logica: ir al ultimo nodo donde se vio al jugador
-
         
-        if (_hunter.pathList == null || _hunter.pathList.Count == 0)
-        {
-            _hunter.pathList = PathFinding.CalculatePathAStar(_hunter.startingNode, NodeManager.Instance.lastTargetNode);
-            _hunter.currentPathIndex = 0;
-            lastTargetNode = NodeManager.Instance.lastTargetNode;
-        }
-        
+        // Esta condicion es por si un cazador esta persiguiendo al jugador a traves del mapa
+        // En ese caso, el "ultimo nodo" estaría cambiando porque un cazador lo ve moverse de nodo a nodo
+        // Me obliga a calcular el path de vuelta
         if (NodeManager.Instance.lastTargetNode != lastTargetNode)
         {
             lastTargetNode = NodeManager.Instance.lastTargetNode;
@@ -61,9 +65,26 @@ public class HunterSearch : IState
         
         if (_hunter.currentPathIndex >= _hunter.pathList.Count)
         {
-            _hunter.lookingAround = true;
+            if (GameManager.Instance.lastPlayerPosition != null)
+            {
+                Vector3 lastKnownPosition = GameManager.Instance.lastPlayerPosition;
+
+                if (Vector3.Distance(_hunter.transform.position, lastKnownPosition) > 0.5f)
+                {
+                    Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, lastKnownPosition, _hunter._steeringForce);
+                    _hunter.SetVelocity(desiredVelocity);
+                    _hunter.transform.position += _hunter._directionalVelocity * Time.deltaTime;
+                }
+                else
+                {
+                    _hunter.lookingAround = true;
+                }
+            }
+            else
+            {
+                _hunter.lookingAround = true; // Por las dudas si la ultima posicion es nula, que vayan al ultimo nodo y la queden ahi
+            }
         }
-        
     }
 
     public void OnSleep()

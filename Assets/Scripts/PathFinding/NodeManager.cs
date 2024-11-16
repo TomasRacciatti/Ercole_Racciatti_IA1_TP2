@@ -27,9 +27,6 @@ public class NodeManager : MonoBehaviour
         }
         */
         Instance = this;
-        //DontDestroyOnLoad(gameObject);
-
-        // Empeza desde la escena del menu y darle play y salir desde esa
 
         _nodeList = new List<Node>(FindObjectsOfType<Node>());
     }
