@@ -8,10 +8,12 @@ public class Agent : Entity
     public override Vector3 Position { get => transform.position; }
     public virtual float VisionRadius => _visionRadius;
     public virtual float VisionAngle => _visionAngle;
+    //public virtual float Speed => _speed;  Preguntar si conviene mas tener speed como publica o propiedad
 
     [Header("Agent")]
     public Vector3 _directionalVelocity;
     public float speed;
+    //[SerializeField] private float _speed;
     [SerializeField] protected float rotationSpeed;
     protected int rotationState;
     [SerializeField] protected float lookAroundSpeed = 45f;

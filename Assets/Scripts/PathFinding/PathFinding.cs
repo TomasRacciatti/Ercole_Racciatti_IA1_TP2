@@ -260,9 +260,8 @@ public static class PathFinding
             if (isDone) break;
         }
 
-        return CalculatePath(startingNode, finishNode, comesFrom);
-        //return CalculatePath_TheetaStar(agent, startingNode, finishNode, comesFrom);
-        //return CalculatePath_TheetaStar2(startingNode, finishNode, comesFrom);
+        //return CalculatePath(startingNode, finishNode, comesFrom);
+        return CalculatePath_TheetaStar(agent, startingNode, finishNode, comesFrom);
     }
 
 
@@ -271,7 +270,17 @@ public static class PathFinding
 
     // No Funcional
     private static List<Vector3> CalculatePath_TheetaStar(Agent agent, Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
-    {   
+    {
+        // Debuggeo de layer mask
+        for (int i = 0; i < 32; i++) 
+        {
+            if ((theetaStarObstacles.value & (1 << i)) != 0)
+            {
+                Debug.Log($"Layer {i} ({LayerMask.LayerToName(i)}) is included.");
+            }
+        }
+
+
         List<Vector3> path = new List<Vector3>() { finishNode.transform.position };
 
         Node currentNode = finishNode;
@@ -293,27 +302,37 @@ public static class PathFinding
             Vector3 anchorPos = anchor.transform.position;
             Vector3 direction = currentPos - anchorPos;
 
-            bool isVisible = Physics.SphereCast(anchorPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
+            // Para dibujar las lineas
+            Vector3 previousPos = previousNode.transform.position;
+            Vector3 directionPrevious = currentPos - previousPos;
+
+
+            bool isVisible = !Physics.SphereCast(anchorPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
 
             if (isVisible)
             {
+                Debug.DrawLine(anchorPos, anchorPos + direction, Color.green, 1f);
                 previousNode = currentNode;
                 currentNode = comesFrom[currentNode];
             }
             else
             {
+                Debug.DrawLine(previousPos, previousPos + directionPrevious, Color.green, 1f);
+                Debug.DrawLine(anchorPos, anchorPos + direction, Color.red, 1f);
                 path.Add(previousNode.transform.position);
                 anchor = previousNode;
+                previousNode = currentNode; 
                 currentNode = comesFrom[currentNode];
             }
         }
 
+        
         {
-            Vector3 curPos = thetaStar_InitialPosition;
+            Vector3 currentPos = thetaStar_InitialPosition;
             Vector3 anchorPos = anchor.transform.position;
-            Vector3 direction = curPos - anchorPos;
+            Vector3 direction = currentPos - anchorPos;
 
-            bool isVisible = Physics.SphereCast(anchorPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
+            bool isVisible = !Physics.SphereCast(anchorPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
 
 
             if (isVisible)
@@ -328,50 +347,6 @@ public static class PathFinding
 
         }
 
-        path.Reverse();
-        return path;
-    }
-
-
-    // No Funcional
-    private static List<Vector3> CalculatePath_TheetaStar2(Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
-    {
-        List<Vector3> path = new List<Vector3>() { finishNode.transform.position };
-
-        Node currentNode = finishNode;
-        Node previousNode = finishNode;
-        Node anchor = finishNode;
-
-        //Vector3 thetaStar_InitialPosition = agent.transform.position;
-
-        while (currentNode != startingNode && comesFrom.ContainsKey(currentNode))
-        {
-            if (currentNode == previousNode)
-            {
-                anchor = currentNode;
-                currentNode = comesFrom[currentNode];
-                continue;
-            }
-
-            Vector3 currentPos = currentNode.transform.position;
-            Vector3 previousPos = previousNode.transform.position;
-            Vector3 direction = currentPos - previousPos;
-
-            bool isVisible = Physics.SphereCast(previousPos, thetaStar_ObstacleCheckRadius, direction.normalized, out var _, direction.magnitude, theetaStarObstacles);
-
-            if (isVisible)
-            {
-                path.Add(anchor.transform.position);
-                previousNode = currentNode;
-            }
-            else
-            {
-                anchor = currentNode;
-                currentNode = comesFrom[currentNode];
-            }
-        }
-
-        path.Add(startingNode.transform.position);
         path.Reverse();
         return path;
     }
