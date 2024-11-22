@@ -78,23 +78,6 @@ public class HunterPatrol : IState
             {
                 ChangeWaypoint();
             }
-            
-
-            // CAMBIAR ESTA LOGICA POR UNA QUE USE PATH FINDING
-
-            /*
-            Vector3 patrolPointPosition = _hunter.patrolPoints[_targetPoint].transform.position;
-           
-            Vector3 desiredVelocity = SteeringBehaviours.Seek(_hunter.transform.position, _hunter.speed, _hunter._directionalVelocity, patrolPointPosition, _hunter._steeringForce);
-            _hunter.SetVelocity(desiredVelocity);
-
-            _hunter.transform.position += _hunter._directionalVelocity * Time.deltaTime;
-
-            if (Vector3.Distance(_hunter.transform.position, patrolPointPosition) < 0.5f)
-            {
-                ChangeWaypoint();
-            }
-            */
         }
     }
 

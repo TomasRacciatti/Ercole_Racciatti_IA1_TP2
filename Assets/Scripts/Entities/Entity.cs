@@ -14,9 +14,4 @@ public class Entity : MonoBehaviour
     {
         initialPosition = transform.position;
     }
-
-    public void ResetState()
-    {
-        transform.position = initialPosition;
-    }
 }

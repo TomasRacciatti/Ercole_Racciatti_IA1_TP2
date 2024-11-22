@@ -12,15 +12,18 @@ public class HunterSearch : IState
     public void OnAwake()
     {
         _hunter.pathList = null;
-        
+
         // Apenas entra calculo el path una sola vez. Si lastTargetNode no cambia, este es el camino que va a quedar
 
-        
         if (_hunter.pathList == null || _hunter.pathList.Count == 0)
         {
-            _hunter.pathList = PathFinding.CalculatePathAStar(_hunter, _hunter.startingNode, NodeManager.Instance.lastTargetNode);
-            _hunter.currentPathIndex = 0;
-            lastTargetNode = NodeManager.Instance.lastTargetNode;
+            if (NodeManager.Instance.lastTargetNode)
+            {
+                _hunter.pathList = PathFinding.CalculatePathAStar(_hunter, _hunter.startingNode, NodeManager.Instance.lastTargetNode);
+                _hunter.currentPathIndex = 0;
+                lastTargetNode = NodeManager.Instance.lastTargetNode;
+            }
+                
         }
 
         return;
