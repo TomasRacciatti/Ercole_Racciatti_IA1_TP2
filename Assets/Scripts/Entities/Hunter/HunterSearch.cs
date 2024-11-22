@@ -15,6 +15,7 @@ public class HunterSearch : IState
         
         // Apenas entra calculo el path una sola vez. Si lastTargetNode no cambia, este es el camino que va a quedar
 
+        
         if (_hunter.pathList == null || _hunter.pathList.Count == 0)
         {
             _hunter.pathList = PathFinding.CalculatePathAStar(_hunter, _hunter.startingNode, NodeManager.Instance.lastTargetNode);
