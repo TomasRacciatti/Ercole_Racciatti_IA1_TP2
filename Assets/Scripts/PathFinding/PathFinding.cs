@@ -266,7 +266,7 @@ public static class PathFinding
 
 
     public static LayerMask theetaStarObstacles = LayerMask.GetMask("Obstacles");
-    public static float thetaStar_ObstacleCheckRadius = 0.25f;
+    public static float thetaStar_ObstacleCheckRadius = 0.1f;
 
     // No Funcional
     private static List<Vector3> CalculatePath_TheetaStar(Agent agent, Node startingNode, Node finishNode, Dictionary<Node, Node> comesFrom)
@@ -321,7 +321,7 @@ public static class PathFinding
                 Debug.DrawLine(anchorPos, anchorPos + direction, Color.red, 1f);
                 path.Add(previousNode.transform.position);
                 anchor = previousNode;
-                previousNode = currentNode; 
+                previousNode = currentNode; // Hay algo raro con esta linea, PREGUNTAR
                 currentNode = comesFrom[currentNode];
             }
         }
