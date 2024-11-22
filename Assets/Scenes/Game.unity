@@ -908,7 +908,7 @@ MonoBehaviour:
   pathList: []
   startingNode: {fileID: 0}
   currentPathIndex: 0
-  _speed: 7
+  _speed: 5
   _victoryLayerMask:
     serializedVersion: 2
     m_Bits: 67108864
@@ -1072,7 +1072,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069331611826850700, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.79
+      value: -0.72
       objectReference: {fileID: 0}
     - target: {fileID: 8069331611826850700, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1080,7 +1080,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8069331611826850700, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.64
+      value: -3.67
       objectReference: {fileID: 0}
     - target: {fileID: 8069331611826850700, guid: 58a6d4d0fcc4d9945bb5f2198b546854, type: 3}
       propertyPath: m_LocalRotation.w
