@@ -312,6 +312,7 @@ public static class PathFinding
             if (isVisible)
             {
                 Debug.DrawLine(anchorPos, anchorPos + direction, Color.green, 1f);
+
                 previousNode = currentNode;
                 currentNode = comesFrom[currentNode];
             }
@@ -319,6 +320,7 @@ public static class PathFinding
             {
                 Debug.DrawLine(previousPos, previousPos + directionPrevious, Color.green, 1f);
                 Debug.DrawLine(anchorPos, anchorPos + direction, Color.red, 1f);
+
                 path.Add(previousNode.transform.position);
                 anchor = previousNode;
                 previousNode = currentNode; // Hay algo raro con esta linea, PREGUNTAR
@@ -326,7 +328,7 @@ public static class PathFinding
             }
         }
 
-        
+
         {
             Vector3 currentPos = thetaStar_InitialPosition;
             Vector3 anchorPos = anchor.transform.position;
